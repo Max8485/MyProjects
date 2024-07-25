@@ -1,8 +1,11 @@
 package org.example.springproject.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+import org.example.springproject.models.Book;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -10,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AuthorDto {
 
     private String firstName;
@@ -19,7 +23,7 @@ public class AuthorDto {
     private String middleName;
 
     @JsonFormat(pattern="dd.MM.yyyy")
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
 
     private List<BookDto> books;
 }

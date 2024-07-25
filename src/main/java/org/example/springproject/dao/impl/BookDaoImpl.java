@@ -119,9 +119,10 @@ public class BookDaoImpl implements BookDao {
 
     private Book buildBook(ResultSet resultSet) {
         try {
-            String title = resultSet.getString("title");
-            return new Book(title);
-
+            return Book.builder()
+                    .title(resultSet.getString("title"))
+                    .id(resultSet.getLong("id"))
+                    .build();
         } catch (SQLException e) {
             throw new CommonSQLException(e);
         }

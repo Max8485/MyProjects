@@ -9,7 +9,8 @@ import lombok.*;
 @ToString
 public class BookDto {
 
+    private Long id;
+
     private String title;
 
-    private Long authorId;
 }

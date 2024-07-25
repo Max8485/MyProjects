@@ -5,7 +5,7 @@ import org.example.springproject.models.Author;
 import java.util.List;
 import java.util.Optional;
 
-public interface AuthorDao {
+public interface AuthorDao { //написать тесты!
     List<Author> findAll();
 
     List<Author> findAllWithBooks();

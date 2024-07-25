@@ -2,7 +2,6 @@ package org.example.springproject.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.springproject.dto.AuthorDto;
-import org.example.springproject.dto.AuthorDtoShort;
 import org.example.springproject.models.Author;
 import org.example.springproject.service.AuthorService;
 import org.modelmapper.ModelMapper;
@@ -19,22 +18,25 @@ public class AuthorController {
     private final ModelMapper modelMapper;
 
     @GetMapping("/api/v1/authors")
-    public List<AuthorDtoShort> findAll() { //работает!
-        return authorService.findAll().stream()
-                .map(author -> modelMapper.map(author, AuthorDtoShort.class))
-                .collect(Collectors.toList());
+    public List<AuthorDto> findAll(@RequestParam(name = "extended") boolean isExtended) { //работает!
+        if (isExtended) {
+            return authorService.findAllWithBooks().stream()
+                    .map(author -> modelMapper.map(author, AuthorDto.class))
+                    .collect(Collectors.toList());
+        } else {
+            return authorService.findAll().stream()
+                    .map(author -> modelMapper.map(author, AuthorDto.class))
+                    .collect(Collectors.toList());
+        }
     }
 
-    @GetMapping("/api/v1/authors/extended")  //работает!
-    public List<AuthorDto> findAllWithBooks() {
-        return authorService.findAllWithBooks().stream()
-                .map(author -> modelMapper.map(author, AuthorDto.class))
-                .collect(Collectors.toList());
-    }
+
+
+
 
     @PostMapping("/api/v1/authors") //работает!
-    public void save(@RequestBody AuthorDtoShort authorDTOShort) {
-        Author author = modelMapper.map(authorDTOShort, Author.class);
+    public void save(@RequestBody AuthorDto authorDTO) {
+        Author author = modelMapper.map(authorDTO, Author.class);
         authorService.save(author);
     }
 
@@ -44,9 +46,9 @@ public class AuthorController {
     }
 
     @PatchMapping("/api/v1/authors/{id}")  //Работает!
-    public void updateAuthorName(@RequestBody AuthorDtoShort authorDtoShort,
+    public void updateAuthorName(@RequestBody AuthorDto authorDto,
                                  @PathVariable(name = "id") long id) {
-        Author author = modelMapper.map(authorDtoShort, Author.class);
+        Author author = modelMapper.map(authorDto, Author.class);
         authorService.updateAuthorName(author, id);
     }
 

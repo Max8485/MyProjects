@@ -3,6 +3,7 @@ package org.example.springproject.dao.impl;
 import org.example.springproject.dao.AuthorDao;
 import org.example.springproject.exceptions.CommonSQLException;
 import org.example.springproject.models.Author;
+import org.example.springproject.models.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -17,8 +18,10 @@ import java.util.Optional;
 public class AuthorDaoImpl implements AuthorDao {
 
     private static final String FIND_ALL = "SELECT * FROM author";
-    private static final String FIND_ALL_WITH_BOOKS = "SELECT * FROM author JOIN book on author.id = book.author_id" +
-            " ORDER BY author.id";
+    private static final String FIND_ALL_WITH_BOOKS = "SELECT author.first_name, author.last_name, author.middle_name," +
+            " author.date_of_birth, book.id AS book_id, book.author_id, book.title" +
+            " FROM author JOIN book on author.id = book.author_id ORDER BY author.id";
+
     private static final String FIND_AUTHOR_BY_ID = "SELECT * FROM author WHERE id=?";
     private static final String SAVE = "INSERT INTO author(first_name, last_name, middle_name, date_of_birth) VALUES (?, ?, ?, ?)";
     private static final String UPDATE_AUTHOR_NAME = "UPDATE author SET first_name=?, last_name=?, middle_name=?," +
@@ -50,13 +53,22 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public List<Author> findAllWithBooks() { // доработать!
+        long currentAuthorId = 0;
+        Author currentAuthor = null;
+        List<Author> authorListWithBooks = new ArrayList<>();
+
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(FIND_ALL_WITH_BOOKS);
             ResultSet resultSet = statement.executeQuery();
 
-            List<Author> authorListWithBooks = new ArrayList<>();
             while (resultSet.next()) {
-                authorListWithBooks.add(buildAuthor(resultSet));
+                long authorId = resultSet.getLong("author_id");
+                if (currentAuthorId != authorId) {
+                    authorListWithBooks.add(currentAuthor);
+                    currentAuthor = buildAuthor(resultSet);
+                }
+                currentAuthor.getBooks().add(buildBook(resultSet));
+
             }
             return authorListWithBooks;
         } catch (SQLException e) {
@@ -128,6 +140,16 @@ public class AuthorDaoImpl implements AuthorDao {
             String middleName = resultSet.getString("middle_name");
             LocalDate dateOfBirth = resultSet.getDate("date_of_birth").toLocalDate();
             return new Author(id, firstName, lastName, middleName, dateOfBirth, new ArrayList<>());
+        } catch (SQLException e) {
+            throw new CommonSQLException(e);
+        }
+    }
+    private Book buildBook(ResultSet resultSet) {
+        try {
+            return Book.builder()
+                    .title(resultSet.getString("title"))
+                    .id(resultSet.getLong("book_id"))
+                    .build();
         } catch (SQLException e) {
             throw new CommonSQLException(e);
         }
