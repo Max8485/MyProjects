@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,15 +17,15 @@ import java.util.Optional;
 public class AuthorDaoImpl implements AuthorDao {
 
     private static final String FIND_ALL = "SELECT * FROM author";
-    private static final String FIND_ALL_WITH_BOOKS = "SELECT author.first_name, author.last_name, author.middle_name," +
-            " author.date_of_birth, book.id AS book_id, book.author_id, book.title" +
-            " FROM author JOIN book on author.id = book.author_id ORDER BY author.id";
-
+    private static final String FIND_ALL_WITH_BOOKS = "SELECT author.first_name, author.last_name, author.middle_name, \n" +
+            "             author.date_of_birth, book.id AS book_id, author.id AS author_id, book.title\n" +
+            "             FROM author LEFT JOIN book on author.id = book.author_id ORDER BY author.id";
     private static final String FIND_AUTHOR_BY_ID = "SELECT * FROM author WHERE id=?";
     private static final String SAVE = "INSERT INTO author(first_name, last_name, middle_name, date_of_birth) VALUES (?, ?, ?, ?)";
     private static final String UPDATE_AUTHOR_NAME = "UPDATE author SET first_name=?, last_name=?, middle_name=?," +
             " date_of_birth=? WHERE id=?";
     private static final String DELETE = "DELETE From author WHERE id=?";
+    private static final String DELETE_ALL = "DELETE FROM author";
 
     private final DataSource dataSource;
 
@@ -52,7 +51,7 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public List<Author> findAllWithBooks() { // доработать!
+    public List<Author> findAllWithBooks() {
         long currentAuthorId = 0;
         Author currentAuthor = null;
         List<Author> authorListWithBooks = new ArrayList<>();
@@ -68,7 +67,6 @@ public class AuthorDaoImpl implements AuthorDao {
                     currentAuthor = buildAuthor(resultSet);
                 }
                 currentAuthor.getBooks().add(buildBook(resultSet));
-
             }
             return authorListWithBooks;
         } catch (SQLException e) {
@@ -132,14 +130,26 @@ public class AuthorDaoImpl implements AuthorDao {
         }
     }
 
+    @Override
+    public void deleteAll() {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(DELETE_ALL);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new CommonSQLException(e);
+        }
+    }
+
     private Author buildAuthor(ResultSet resultSet) {
         try {
-            long id = resultSet.getLong("id");
-            String firstName = resultSet.getString("first_name");
-            String lastName = resultSet.getString("last_name");
-            String middleName = resultSet.getString("middle_name");
-            LocalDate dateOfBirth = resultSet.getDate("date_of_birth").toLocalDate();
-            return new Author(id, firstName, lastName, middleName, dateOfBirth, new ArrayList<>());
+            return Author.builder()
+                    .id(resultSet.getLong("author_id"))
+                    .firstName(resultSet.getString("first_name"))
+                    .lastName(resultSet.getString("last_name"))
+                    .middleName(resultSet.getString("middle_name"))
+                    .dateOfBirth(resultSet.getDate("date_of_birth").toLocalDate())
+                    .books(new ArrayList<>())
+                    .build();
         } catch (SQLException e) {
             throw new CommonSQLException(e);
         }

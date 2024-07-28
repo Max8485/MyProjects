@@ -17,4 +17,6 @@ public interface AuthorDao { //написать тесты!
     void updateAuthorName(Author author, long id);
 
     void delete(long id);
+
+    void deleteAll();
 }

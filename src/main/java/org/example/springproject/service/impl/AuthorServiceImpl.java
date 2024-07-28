@@ -28,8 +28,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public List<Author> findAllWithBooks() { // работает!
-        return authorDao.findAll().stream().peek(author -> author.setBooks(bookDao.findBooksByAuthorId(author.getId())))
-                .collect(Collectors.toList());
+        return authorDao.findAllWithBooks();
     }
 
     @Override
