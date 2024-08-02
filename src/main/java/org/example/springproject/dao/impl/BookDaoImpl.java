@@ -83,10 +83,10 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public void save(Book book) {
+    public void save(Book book) { //доработать! + authoriD
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(SAVE_BOOK_WITH_AUTHOR_ID);
-            statement.setLong(1, book.getId());
+            statement.setLong(1, book.getAuthor().getId()); //
             statement.setString(2, book.getTitle());
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -120,8 +120,8 @@ public class BookDaoImpl implements BookDao {
     private Book buildBook(ResultSet resultSet) {
         try {
             return Book.builder()
-                    .title(resultSet.getString("title"))
                     .id(resultSet.getLong("id"))
+                    .title(resultSet.getString("title"))
                     .build();
         } catch (SQLException e) {
             throw new CommonSQLException(e);

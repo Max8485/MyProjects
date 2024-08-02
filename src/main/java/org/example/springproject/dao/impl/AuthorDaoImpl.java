@@ -8,19 +8,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.Date;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class AuthorDaoImpl implements AuthorDao {
 
-    private static final String FIND_ALL = "SELECT * FROM author";
+    private static final String FIND_ALL = "SELECT author.id AS author_id, author.first_name, author.last_name, " +
+            "author.middle_name, author.date_of_birth FROM author";
+
     private static final String FIND_ALL_WITH_BOOKS = "SELECT author.first_name, author.last_name, author.middle_name, \n" +
             "             author.date_of_birth, book.id AS book_id, author.id AS author_id, book.title\n" +
             "             FROM author LEFT JOIN book on author.id = book.author_id ORDER BY author.id";
-    private static final String FIND_AUTHOR_BY_ID = "SELECT * FROM author WHERE id=?";
+
+    private static final String FIND_AUTHOR_BY_ID = "SELECT author.id AS author_id, author.first_name, author.last_name, " +
+            "author.middle_name, author.date_of_birth FROM author WHERE id=?";
+
     private static final String SAVE = "INSERT INTO author(first_name, last_name, middle_name, date_of_birth) VALUES (?, ?, ?, ?)";
     private static final String UPDATE_AUTHOR_NAME = "UPDATE author SET first_name=?, last_name=?, middle_name=?," +
             " date_of_birth=? WHERE id=?";
@@ -52,23 +56,24 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public List<Author> findAllWithBooks() {
-        long currentAuthorId = 0;
-        Author currentAuthor = null;
-        List<Author> authorListWithBooks = new ArrayList<>();
-
+        Map<Long, Author> authors = new HashMap<>();
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(FIND_ALL_WITH_BOOKS);
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
                 long authorId = resultSet.getLong("author_id");
-                if (currentAuthorId != authorId) {
-                    authorListWithBooks.add(currentAuthor);
+                Author currentAuthor;
+                if (!authors.containsKey(authorId)) {
                     currentAuthor = buildAuthor(resultSet);
+                    authors.put(authorId, currentAuthor);
+                    currentAuthor.setBooks(new ArrayList<>());
+                } else {
+                    currentAuthor = authors.get(authorId);
                 }
                 currentAuthor.getBooks().add(buildBook(resultSet));
             }
-            return authorListWithBooks;
+            return new ArrayList<>(authors.values());
         } catch (SQLException e) {
             throw new CommonSQLException(e);
         }
@@ -91,14 +96,19 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public void save(Author author) {
+    public Author save(Author author) {
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(SAVE);
+            PreparedStatement statement = connection.prepareStatement(SAVE, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, author.getFirstName());
             statement.setString(2, author.getLastName());
             statement.setString(3, author.getMiddleName());
             statement.setDate(4, Date.valueOf(author.getDateOfBirth()));
             statement.executeUpdate();
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                author.setId(generatedKeys.getLong(1));
+            }
+            return author;
         } catch (SQLException e) {
             throw new CommonSQLException(e);
         }

@@ -1,6 +1,7 @@
 package org.example.springproject.dao.impl;
 
 import org.example.springproject.dao.AuthorDao;
+import org.example.springproject.dao.BookDao;
 import org.example.springproject.models.Author;
 import org.example.springproject.models.Book;
 import org.junit.jupiter.api.AfterEach;
@@ -13,17 +14,18 @@ import org.springframework.test.context.ActiveProfiles;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @SpringBootTest
 @ActiveProfiles("test")
 class AuthorDaoImplTest {
 
     private final AuthorDao authorDao;
+    private final BookDao bookDao;
 
     @Autowired
-    AuthorDaoImplTest(AuthorDao authorDao) {
+    AuthorDaoImplTest(AuthorDao authorDao, BookDao bookDao) {
         this.authorDao = authorDao;
+        this.bookDao = bookDao;
     }
 
     @AfterEach
@@ -48,7 +50,14 @@ class AuthorDaoImplTest {
 
     @Test
     void findAllWithBooksTest() {
+        Book book1 = new Book(10L, "DDD", new Author());
+        Book book2 = new Book(11L, "Dkk", new Author());
+        bookDao.save(book1);
+        bookDao.save(book2);
         List<Book> bookList = new ArrayList<>();
+        bookList.add(book1);
+        bookList.add(book2);
+
         Author author1 = new Author(1L, "Александр", "Сергеевич", "Пушкин",
                 LocalDate.of(1799, 6, 6), bookList);
         Author author2 = new Author(2L, "Джон", "Гриффит", "Чейни",
@@ -104,7 +113,7 @@ class AuthorDaoImplTest {
     }
 
     @Test
-    void deleteTest() { //работате!
+    void deleteTest() { //работает!
         List<Book> bookList = new ArrayList<>();
         Author author = new Author(1L, "Александр", "Сергеевич", "Пушкин",
                 LocalDate.of(1799, 6, 6), bookList);

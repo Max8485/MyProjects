@@ -19,4 +19,7 @@ public interface BookDao {
     void updateBookTitle(Book book, long id);
 
     void delete(long id);
+
+    // existsById() {
+
 }

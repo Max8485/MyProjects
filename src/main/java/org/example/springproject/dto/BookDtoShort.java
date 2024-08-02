@@ -8,10 +8,11 @@ import org.example.springproject.models.Author;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class BookDto {
+public class BookDtoShort {
 
-    private Long id;
+    private AuthorDto author;
 
     private String title;
+
 
 }

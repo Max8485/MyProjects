@@ -1,5 +1,6 @@
 package org.example.springproject.service;
 
+import org.example.springproject.models.Author;
 import org.example.springproject.models.Book;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ public interface BookService {
 
     Book findBookById(long id);
 
-//    List<Book> findBooksByAuthorId();
+    List<Book> findBooksByAuthorId(long id);
 
     void save(Book book);
 

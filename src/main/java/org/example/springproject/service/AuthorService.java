@@ -12,7 +12,7 @@ public interface AuthorService {
 
     Author findAuthorById(long id);
 
-    void save(Author author);
+    Author save(Author author);
 
     void updateAuthorName(Author author, long id);
 

@@ -39,8 +39,8 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void save(Author author) {
-        authorDao.save(author);
+    public Author save(Author author) {
+       return authorDao.save(author);
     }
 
     @Override

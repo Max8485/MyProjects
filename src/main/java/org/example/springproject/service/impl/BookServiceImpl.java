@@ -2,12 +2,14 @@ package org.example.springproject.service.impl;
 
 import org.example.springproject.dao.AuthorDao;
 import org.example.springproject.dao.BookDao;
+import org.example.springproject.exceptions.AuthorNotFoundException;
 import org.example.springproject.exceptions.BookNotFoundException;
 import org.example.springproject.models.Author;
 import org.example.springproject.models.Book;
 import org.example.springproject.service.BookService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,20 +34,21 @@ public class BookServiceImpl implements BookService {
         return bookDao.findBookById(id).orElseThrow(BookNotFoundException::new);
     }
 
-//    @Override
-//    public List<Book> findBooksByAuthorId() {
-//
-//        List<Book> bookList = bookDao.findAll();
-//
-//        for(Book books : bookList) {
-//            books.setAuthor(authorDao.findAuthorById());
-//        }
-//        return null;
-//    }
+    @Override
+    public List<Book> findBooksByAuthorId(long id) {
+        return bookDao.findBooksByAuthorId(id);
+    }
 
     @Override
-    public void save(Book book) {
-        bookDao.save(book);
+    public void save(Book book) { //+ authorId
+        //exsistsById(authorId)
+        //if (true) {
+        //
+       //
+
+        //{
+        //Else { //exception не найден автор
+        bookDao.save(book); //+ authorId
     }
 
     @Override

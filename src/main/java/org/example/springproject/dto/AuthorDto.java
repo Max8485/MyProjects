@@ -1,6 +1,7 @@
 package org.example.springproject.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.example.springproject.models.Book;
@@ -14,7 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AuthorDto {
+    private Long id;
 
     private String firstName;
 

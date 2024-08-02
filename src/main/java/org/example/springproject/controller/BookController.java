@@ -1,6 +1,7 @@
 package org.example.springproject.controller;
 
 import org.example.springproject.dto.BookDto;
+import org.example.springproject.dto.BookDtoShort;
 import org.example.springproject.models.Book;
 import org.example.springproject.service.BookService;
 import org.modelmapper.ModelMapper;
@@ -34,12 +35,13 @@ public class BookController {
 
 //    @GetMapping("/api/v1/books/{id}")
 //    public List<Book> findBooksByAuthorId(@PathVariable(name = "id") long id) {
-//        return null;
+//        return bookService.findBooksByAuthorId(id).stream().map(book -> modelMapper.map(book, Book.class))
+//                .collect(Collectors.toList());
 //    }
 
-    @PostMapping("/api/v1/books")  //РАБОТАЕТ!
-    public void save(@RequestBody BookDto bookDto) {
-        Book book = modelMapper.map(bookDto, Book.class);
+    @PostMapping("/api/v1/books")  //
+    public void save(@RequestBody BookDtoShort bookDtoShort) {
+        Book book = modelMapper.map(bookDtoShort, Book.class);
         bookService.save(book);
     }
 

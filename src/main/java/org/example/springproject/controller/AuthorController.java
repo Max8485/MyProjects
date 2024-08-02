@@ -8,8 +8,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,7 +20,7 @@ public class AuthorController {
     public List<AuthorDto> findAll(@RequestParam(name = "extended") boolean isExtended) { //работает!
         List<Author> authorList = null;
         if (isExtended) {
-           authorList = authorService.findAllWithBooks();
+            authorList = authorService.findAllWithBooks();
         } else {
             authorList = authorService.findAll();
         }
@@ -30,9 +28,9 @@ public class AuthorController {
     }
 
     @PostMapping("/api/v1/authors") //работает!
-    public void save(@RequestBody AuthorDto authorDTO) {
+    public AuthorDto save(@RequestBody AuthorDto authorDTO) {
         Author author = modelMapper.map(authorDTO, Author.class);
-        authorService.save(author);
+        return modelMapper.map(authorService.save(author), AuthorDto.class);
     }
 
     @GetMapping("/api/v1/authors/{id}") //работает!
