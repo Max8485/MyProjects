@@ -21,11 +21,21 @@ public class BookController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/api/v1/books")
-    public List<BookDto> findAll() { //работает!
-        return bookService.findAll().stream().map(book -> modelMapper.map(book, BookDto.class))
+    @GetMapping("/api/v1/books") // сделать пагинацию! Работает!
+    public List<BookDto> findAll(@RequestParam(name = "limit") int limit,
+                                 @RequestParam(name = "offset") int offset) {
+
+        List<Book> bookList = null;
+        if (limit == 0 && offset == 0) {
+            bookList = bookService.findAll();
+        } else {
+            bookList = bookService.findAllPageable(limit, offset);
+        }
+        return bookList.stream().map(book -> modelMapper.map(book, BookDto.class))
                 .collect(Collectors.toList());
     }
+
+
 
     @GetMapping("/api/v1/books/{id}")
     public BookDto findBookById(@PathVariable(name = "id") long id) {
@@ -33,21 +43,16 @@ public class BookController {
 
     }
 
-//    @GetMapping("/api/v1/books/{id}")
-//    public List<Book> findBooksByAuthorId(@PathVariable(name = "id") long id) {
-//        return bookService.findBooksByAuthorId(id).stream().map(book -> modelMapper.map(book, Book.class))
-//                .collect(Collectors.toList());
-//    }
-
-    @PostMapping("/api/v1/books")  //
-    public void save(@RequestBody BookDtoShort bookDtoShort) {
+    @PostMapping("/api/v1/author/{authorId}/book")  //РАБОТАЕТ!
+    public void save(@PathVariable(name = "authorId") long authorId,
+                     @RequestBody BookDtoShort bookDtoShort) {
         Book book = modelMapper.map(bookDtoShort, Book.class);
-        bookService.save(book);
+        bookService.save(book, authorId);
     }
 
     @PatchMapping("/api/v1/books/{id}")  //работает!
     public void updateBookTitle(@PathVariable(name = "id") long id,
-                               @RequestBody BookDto bookDTO) {
+                                @RequestBody BookDto bookDTO) {
 
         Book book = modelMapper.map(bookDTO, Book.class);
         bookService.updateBookTitle(book, id);
@@ -57,4 +62,10 @@ public class BookController {
     public void delete(@PathVariable(name = "id") long id) {
         bookService.delete(id);
     }
+
+//        @GetMapping("/api/v1/books/{id}")
+//    public List<Book> findBooksByAuthorId(@PathVariable(name = "id") long id) {
+//        return bookService.findBooksByAuthorId(id).stream().map(book -> modelMapper.map(book, Book.class))
+//                .collect(Collectors.toList());
+//    }
 }

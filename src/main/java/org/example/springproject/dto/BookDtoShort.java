@@ -1,7 +1,6 @@
 package org.example.springproject.dto;
 
 import lombok.*;
-import org.example.springproject.models.Author;
 
 @Getter
 @Setter

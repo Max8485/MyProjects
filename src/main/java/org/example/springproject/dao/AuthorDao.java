@@ -5,7 +5,7 @@ import org.example.springproject.models.Author;
 import java.util.List;
 import java.util.Optional;
 
-public interface AuthorDao { //написать тесты!
+public interface AuthorDao {
     List<Author> findAll();
 
     List<Author> findAllWithBooks();
@@ -19,4 +19,6 @@ public interface AuthorDao { //написать тесты!
     void delete(long id);
 
     void deleteAll();
+
+    boolean existsById(long authorId);
 }

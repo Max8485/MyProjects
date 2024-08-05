@@ -30,6 +30,7 @@ public class AuthorDaoImpl implements AuthorDao {
             " date_of_birth=? WHERE id=?";
     private static final String DELETE = "DELETE From author WHERE id=?";
     private static final String DELETE_ALL = "DELETE FROM author";
+    private static final String EXISTS_BY_AUTHOR_ID = "SELECT EXISTS(SELECT 1 FROM author WHERE id=?)";
 
     private final DataSource dataSource;
 
@@ -170,6 +171,19 @@ public class AuthorDaoImpl implements AuthorDao {
                     .title(resultSet.getString("title"))
                     .id(resultSet.getLong("book_id"))
                     .build();
+        } catch (SQLException e) {
+            throw new CommonSQLException(e);
+        }
+    }
+
+    @Override
+    public boolean existsById(long authorId) { //работает!
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(EXISTS_BY_AUTHOR_ID);
+            statement.setLong(1, authorId);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return resultSet.getBoolean(1);
         } catch (SQLException e) {
             throw new CommonSQLException(e);
         }

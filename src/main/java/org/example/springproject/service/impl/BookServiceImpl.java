@@ -4,14 +4,11 @@ import org.example.springproject.dao.AuthorDao;
 import org.example.springproject.dao.BookDao;
 import org.example.springproject.exceptions.AuthorNotFoundException;
 import org.example.springproject.exceptions.BookNotFoundException;
-import org.example.springproject.models.Author;
 import org.example.springproject.models.Book;
 import org.example.springproject.service.BookService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -30,6 +27,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<Book> findAllPageable(int limit, int offset) { //сделать пагинацию! работает!
+        return bookDao.findAllPageable(limit, offset);
+    }
+
+    @Override
     public Book findBookById(long id) {
         return bookDao.findBookById(id).orElseThrow(BookNotFoundException::new);
     }
@@ -40,15 +42,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void save(Book book) { //+ authorId
-        //exsistsById(authorId)
-        //if (true) {
-        //
-       //
-
-        //{
-        //Else { //exception не найден автор
-        bookDao.save(book); //+ authorId
+    public void save(Book book, long authorId) { //РАБОТАЕТ!
+        if (authorDao.existsById(authorId)) {
+            bookDao.save(book, authorId);
+        } else {
+            throw new AuthorNotFoundException();
+        }
     }
 
     @Override

@@ -24,6 +24,7 @@ public class BookDaoImpl implements BookDao {
     private static final String UPDATE_BOOK_TITLE = "UPDATE book SET title=? WHERE id=?";
     private static final String DELETE = "DELETE From book WHERE id=?";
     private static final String FIND_BOOK_BY_AUTHOR_ID = "SELECT * FROM book WHERE author_id=?";
+    private static final String FIND_ALL_PAGEABLE = "SELECT * FROM book LIMIT ? OFFSET ?";
 
     private final DataSource dataSource;
 
@@ -36,6 +37,24 @@ public class BookDaoImpl implements BookDao {
     public List<Book> findAll() {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(FIND_ALL);
+            ResultSet resultSet = statement.executeQuery();
+
+            List<Book> bookList = new ArrayList<>();
+            while (resultSet.next()) {
+                bookList.add(buildBook(resultSet));
+            }
+            return bookList;
+        } catch (SQLException e) {
+            throw new CommonSQLException(e);
+        }
+    }
+
+    @Override
+    public List<Book> findAllPageable(int limit, int offset) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(FIND_ALL_PAGEABLE);
+            statement.setInt(1, limit);
+            statement.setInt(2, offset);
             ResultSet resultSet = statement.executeQuery();
 
             List<Book> bookList = new ArrayList<>();
@@ -83,10 +102,10 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public void save(Book book) { //доработать! + authoriD
+    public void save(Book book, long authorId) { //РАБОТАЕТ!
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(SAVE_BOOK_WITH_AUTHOR_ID);
-            statement.setLong(1, book.getAuthor().getId()); //
+            statement.setLong(1, authorId);
             statement.setString(2, book.getTitle());
             statement.executeUpdate();
         } catch (SQLException e) {
