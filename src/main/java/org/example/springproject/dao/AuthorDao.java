@@ -1,6 +1,6 @@
 package org.example.springproject.dao;
 
-import org.example.springproject.models.Author;
+import org.example.springproject.entity.Author;
 
 import java.util.List;
 import java.util.Optional;

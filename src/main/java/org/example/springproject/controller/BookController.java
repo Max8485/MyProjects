@@ -2,7 +2,7 @@ package org.example.springproject.controller;
 
 import org.example.springproject.dto.BookDto;
 import org.example.springproject.dto.BookDtoShort;
-import org.example.springproject.models.Book;
+import org.example.springproject.entity.Book;
 import org.example.springproject.service.BookService;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
@@ -22,19 +22,20 @@ public class BookController {
     }
 
     @GetMapping("/api/v1/books") // сделать пагинацию! Работает!
-    public List<BookDto> findAll(@RequestParam(name = "limit") int limit,
-                                 @RequestParam(name = "offset") int offset) {
-
+    public List<BookDto> findAll(@RequestParam(name = "pageSize", required = false) Integer pageSize,        // 3    //pageSize = limit
+                                 @RequestParam(name = "pageNumber", required = false) Integer pageNumber) {  // 0    //pageNumber
+                                                                                       //offset = pageSize * pageNumber
         List<Book> bookList = null;
-        if (limit == 0 && offset == 0) {
+
+        if (pageSize == null || pageNumber == null) {
             bookList = bookService.findAll();
         } else {
-            bookList = bookService.findAllPageable(limit, offset);
+            pageNumber = pageSize * (pageNumber - 1);
+            bookList = bookService.findAllPageable(pageSize, pageNumber);
         }
         return bookList.stream().map(book -> modelMapper.map(book, BookDto.class))
                 .collect(Collectors.toList());
     }
-
 
 
     @GetMapping("/api/v1/books/{id}")
@@ -63,9 +64,9 @@ public class BookController {
         bookService.delete(id);
     }
 
-//        @GetMapping("/api/v1/books/{id}")
-//    public List<Book> findBooksByAuthorId(@PathVariable(name = "id") long id) {
-//        return bookService.findBooksByAuthorId(id).stream().map(book -> modelMapper.map(book, Book.class))
-//                .collect(Collectors.toList());
-//    }
+    @GetMapping("/api/v1/books/author/{id}") //работает!
+    public List<BookDto> findBooksByAuthorId(@PathVariable(name = "id") long id) {
+        return bookService.findBooksByAuthorId(id).stream().map(book -> modelMapper.map(book, BookDto.class))
+                .collect(Collectors.toList());
+    }
 }

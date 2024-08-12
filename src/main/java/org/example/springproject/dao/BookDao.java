@@ -1,6 +1,6 @@
 package org.example.springproject.dao;
 
-import org.example.springproject.models.Book;
+import org.example.springproject.entity.Book;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,7 +9,7 @@ public interface BookDao {
 
     List<Book> findAll();
 
-    List<Book> findAllPageable(int limit, int offset);
+    List<Book> findAllPageable(int pageSize, int pageNumber);
 
     Optional<Book> findBookById(long id);
 

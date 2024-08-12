@@ -1,6 +1,6 @@
 package org.example.springproject.service;
 
-import org.example.springproject.models.Book;
+import org.example.springproject.entity.Book;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,7 +10,7 @@ public interface BookService {
 
     List<Book> findAll();
 
-    List<Book> findAllPageable(int limit, int offset);
+    List<Book> findAllPageable(int pageSize, int pageNumber);
 
     Book findBookById(long id);
 

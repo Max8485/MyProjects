@@ -3,12 +3,11 @@ package org.example.springproject.service.impl;
 import org.example.springproject.dao.AuthorDao;
 import org.example.springproject.dao.BookDao;
 import org.example.springproject.exceptions.AuthorNotFoundException;
-import org.example.springproject.models.Author;
+import org.example.springproject.entity.Author;
 import org.example.springproject.service.AuthorService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {

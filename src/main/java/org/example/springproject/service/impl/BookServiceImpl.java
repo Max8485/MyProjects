@@ -2,9 +2,9 @@ package org.example.springproject.service.impl;
 
 import org.example.springproject.dao.AuthorDao;
 import org.example.springproject.dao.BookDao;
+import org.example.springproject.entity.Book;
 import org.example.springproject.exceptions.AuthorNotFoundException;
 import org.example.springproject.exceptions.BookNotFoundException;
-import org.example.springproject.models.Book;
 import org.example.springproject.service.BookService;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +27,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> findAllPageable(int limit, int offset) { //сделать пагинацию! работает!
-        return bookDao.findAllPageable(limit, offset);
+    public List<Book> findAllPageable(int pageSize, int pageNumber) { //сделать пагинацию! работает!
+        return bookDao.findAllPageable(pageSize, pageNumber);
     }
 
     @Override

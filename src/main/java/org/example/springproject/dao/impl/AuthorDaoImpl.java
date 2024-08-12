@@ -2,8 +2,8 @@ package org.example.springproject.dao.impl;
 
 import org.example.springproject.dao.AuthorDao;
 import org.example.springproject.exceptions.CommonSQLException;
-import org.example.springproject.models.Author;
-import org.example.springproject.models.Book;
+import org.example.springproject.entity.Author;
+import org.example.springproject.entity.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

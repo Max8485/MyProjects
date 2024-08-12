@@ -2,7 +2,7 @@ package org.example.springproject.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.springproject.dto.AuthorDto;
-import org.example.springproject.models.Author;
+import org.example.springproject.entity.Author;
 import org.example.springproject.service.AuthorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
