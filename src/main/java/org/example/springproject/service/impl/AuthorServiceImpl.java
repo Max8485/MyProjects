@@ -1,54 +1,66 @@
 package org.example.springproject.service.impl;
 
-import org.example.springproject.dao.AuthorDao;
-import org.example.springproject.dao.BookDao;
-import org.example.springproject.exceptions.AuthorNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.example.springproject.entity.Author;
+import org.example.springproject.exceptions.AuthorAlreadyExistsException;
+import org.example.springproject.exceptions.AuthorNotFoundException;
+import org.example.springproject.repository.AuthorRepository;
 import org.example.springproject.service.AuthorService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
+@RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 
-    private final BookDao bookDao;
-    private final AuthorDao authorDao;
+    private final AuthorRepository authorRepository;
 
-    public AuthorServiceImpl(BookDao bookDao, AuthorDao authorDao) {
-        this.bookDao = bookDao;
-        this.authorDao = authorDao;
+    @Override
+    public Page<Author> findAll(Pageable pageable) { //mapstruct! написать тесты для сервиса, docker
+        return authorRepository.findAll(pageable).map(author -> {
+            author.setBooks(null);
+            return author;
+        });
     }
 
     @Override
-    public List<Author> findAll() {
-        return authorDao.findAll();
-    }
-
-    @Override
-    public List<Author> findAllWithBooks() { // работает!
-        return authorDao.findAllWithBooks();
+    public Page<Author> findAllWithBooks(Pageable pageable) {
+        return authorRepository.findAllWithBooks(pageable);
     }
 
     @Override
     public Author findAuthorById(long id) {
-        Author author = authorDao.findAuthorById(id).orElseThrow(AuthorNotFoundException::new);
-        author.setBooks(bookDao.findBooksByAuthorId(author.getId()));
-        return author;
+        return authorRepository.findById(id).orElseThrow(AuthorNotFoundException::new);
     }
 
     @Override
-    public Author save(Author author) {
-       return authorDao.save(author);
+    public Author save(Author author) { //работает!
+        boolean isExists = authorRepository.existsByUniqueIndex(author.getFirstName(), author.getLastName(), author.getMiddleName(), author.getDateOfBirth());
+        if (isExists) {
+            throw new AuthorAlreadyExistsException();
+        }
+        return authorRepository.save(author);
     }
 
     @Override
-    public void updateAuthorName(Author author, long id) {
-        authorDao.updateAuthorName(author, id);
+    public void updateAuthor(Author author, long id) {
+        //existsByID - true - обновляем!
+        boolean existsById = authorRepository.existsById(id);
+        if (existsById) {
+            author.setId(id);
+            authorRepository.save(author);
+        } else {
+            throw new AuthorNotFoundException();
+        }
     }
 
     @Override
     public void delete(long id) {
-        authorDao.delete(id);
+        authorRepository.deleteById(id);
+    }
+
+    public void deleteAll() {
+        authorRepository.deleteAll();
     }
 }

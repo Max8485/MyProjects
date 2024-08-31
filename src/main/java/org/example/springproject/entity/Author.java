@@ -17,7 +17,7 @@ import java.util.List;
 public class Author {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //почитать!
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "first_name")
@@ -33,6 +33,6 @@ public class Author {
     private LocalDate dateOfBirth;
 
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private List<Book> books;
 }

@@ -5,9 +5,9 @@ import org.example.springproject.dto.AuthorDto;
 import org.example.springproject.entity.Author;
 import org.example.springproject.service.AuthorService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,14 +17,15 @@ public class AuthorController {
     private final ModelMapper modelMapper;
 
     @GetMapping("/api/v1/authors")
-    public List<AuthorDto> findAll(@RequestParam(name = "extended") boolean isExtended) { //работает!
-        List<Author> authorList = null;
+    public Page<AuthorDto> findAll(@RequestParam(name = "extended") boolean isExtended,
+                                   Pageable pageable) { //
+        Page<Author> authorPage = null;
         if (isExtended) {
-            authorList = authorService.findAllWithBooks();
+            authorPage = authorService.findAllWithBooks(pageable);
         } else {
-            authorList = authorService.findAll();
+            authorPage = authorService.findAll(pageable);
         }
-        return authorList.stream().map(author -> modelMapper.map(author, AuthorDto.class)).toList();
+        return authorPage.map(author -> modelMapper.map(author, AuthorDto.class));
     }
 
     @PostMapping("/api/v1/authors") //работает!
@@ -35,14 +36,15 @@ public class AuthorController {
 
     @GetMapping("/api/v1/authors/{id}") //работает!
     public AuthorDto findAuthorById(@PathVariable(name = "id") long id) {
-        return modelMapper.map(authorService.findAuthorById(id), AuthorDto.class);
+        Author author = authorService.findAuthorById(id);
+        return modelMapper.map(author, AuthorDto.class);
     }
 
     @PatchMapping("/api/v1/authors/{id}")  //Работает!
-    public void updateAuthorName(@RequestBody AuthorDto authorDto,
-                                 @PathVariable(name = "id") long id) {
+    public void updateAuthor(@RequestBody AuthorDto authorDto,
+                             @PathVariable(name = "id") long id) {
         Author author = modelMapper.map(authorDto, Author.class);
-        authorService.updateAuthorName(author, id);
+        authorService.updateAuthor(author, id);
     }
 
     @DeleteMapping("/api/v1/authors/{id}")

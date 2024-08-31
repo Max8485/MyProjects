@@ -1,5 +1,6 @@
 package org.example.springproject.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.example.springproject.dto.BookDto;
 import org.example.springproject.dto.BookDtoShort;
 import org.example.springproject.entity.Book;
@@ -7,36 +8,12 @@ import org.example.springproject.service.BookService;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @RestController
+@RequiredArgsConstructor
 public class BookController {
 
     private final BookService bookService;
     private final ModelMapper modelMapper;
-
-    public BookController(BookService bookService, ModelMapper modelMapper) {
-        this.bookService = bookService;
-        this.modelMapper = modelMapper;
-    }
-
-    @GetMapping("/api/v1/books") // сделать пагинацию! Работает!
-    public List<BookDto> findAll(@RequestParam(name = "pageSize", required = false) Integer pageSize,        // 3    //pageSize = limit
-                                 @RequestParam(name = "pageNumber", required = false) Integer pageNumber) {  // 0    //pageNumber
-                                                                                       //offset = pageSize * pageNumber
-        List<Book> bookList = null;
-
-        if (pageSize == null || pageNumber == null) {
-            bookList = bookService.findAll();
-        } else {
-            pageNumber = pageSize * (pageNumber - 1);
-            bookList = bookService.findAllPageable(pageSize, pageNumber);
-        }
-        return bookList.stream().map(book -> modelMapper.map(book, BookDto.class))
-                .collect(Collectors.toList());
-    }
-
 
     @GetMapping("/api/v1/books/{id}")
     public BookDto findBookById(@PathVariable(name = "id") long id) {
@@ -44,29 +21,26 @@ public class BookController {
 
     }
 
-    @PostMapping("/api/v1/author/{authorId}/book")  //РАБОТАЕТ!
+    @PostMapping("/api/v1/author/{authorId}/book")
     public void save(@PathVariable(name = "authorId") long authorId,
                      @RequestBody BookDtoShort bookDtoShort) {
         Book book = modelMapper.map(bookDtoShort, Book.class);
         bookService.save(book, authorId);
     }
 
-    @PatchMapping("/api/v1/books/{id}")  //работает!
-    public void updateBookTitle(@PathVariable(name = "id") long id,
-                                @RequestBody BookDto bookDTO) {
+    @PatchMapping("/api/v1/author/{authorId}/books/{id}")
+    public void updateBookTitle(
+            @PathVariable(name = "authorId") long authorId,
+            @PathVariable(name = "id") long id,
+            @RequestBody BookDto bookDto) {
 
-        Book book = modelMapper.map(bookDTO, Book.class);
-        bookService.updateBookTitle(book, id);
+        Book book = modelMapper.map(bookDto, Book.class);
+        bookService.updateBook(book, id, authorId);
     }
 
-    @DeleteMapping("/api/v1/books/{id}") //работает!
+    @DeleteMapping("/api/v1/books/{id}")
     public void delete(@PathVariable(name = "id") long id) {
         bookService.delete(id);
     }
-
-    @GetMapping("/api/v1/books/author/{id}") //работает!
-    public List<BookDto> findBooksByAuthorId(@PathVariable(name = "id") long id) {
-        return bookService.findBooksByAuthorId(id).stream().map(book -> modelMapper.map(book, BookDto.class))
-                .collect(Collectors.toList());
-    }
 }
+

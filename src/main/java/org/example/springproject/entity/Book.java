@@ -12,6 +12,7 @@ import lombok.*;
 @Entity
 @Table(name = "book")
 public class Book {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -19,7 +20,7 @@ public class Book {
     @Column(name = "title")
     private String title;
 
-   @ManyToOne
-   @JoinColumn(name = "author_id", referencedColumnName ="id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
     private Author author;
 }
