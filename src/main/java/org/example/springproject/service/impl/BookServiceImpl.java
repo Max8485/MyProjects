@@ -35,24 +35,19 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void updateBook(Book book, long id, long authorId) { //работает!
-        if (bookRepository.existsById(id)) {
-            book.setId(id);
-            book.setAuthor(Author.builder()
-                    .id(authorId)
-                    .build());
-            bookRepository.save(book);
-        } else {
-            throw new BookNotFoundException();
-        }
+    public void updateBook(Book book, long id) { //работает!
+        bookRepository.findById(id).ifPresentOrElse(
+                b -> {
+                    book.setAuthor(b.getAuthor());
+                    book.setId(id);
+                    bookRepository.save(book);
+                },
+                () -> {throw new BookNotFoundException();}
+        );
     }
 
     @Override
     public void delete(long id) { //работает!
         bookRepository.deleteById(id);
-    }
-
-    public void deleteAll() {
-        bookRepository.deleteAll();
     }
 }

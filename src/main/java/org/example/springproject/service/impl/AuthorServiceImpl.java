@@ -60,7 +60,4 @@ public class AuthorServiceImpl implements AuthorService {
         authorRepository.deleteById(id);
     }
 
-    public void deleteAll() {
-        authorRepository.deleteAll();
-    }
 }

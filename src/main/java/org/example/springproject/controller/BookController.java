@@ -28,14 +28,13 @@ public class BookController {
         bookService.save(book, authorId);
     }
 
-    @PatchMapping("/api/v1/author/{authorId}/books/{id}")
+    @PatchMapping("/api/v1/books/{id}")
     public void updateBookTitle(
-            @PathVariable(name = "authorId") long authorId,
             @PathVariable(name = "id") long id,
             @RequestBody BookDto bookDto) {
 
         Book book = modelMapper.map(bookDto, Book.class);
-        bookService.updateBook(book, id, authorId);
+        bookService.updateBook(book, id);
     }
 
     @DeleteMapping("/api/v1/books/{id}")

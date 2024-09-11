@@ -1,0 +1,17 @@
+version: '3'
+services:
+  virtual-library:
+    build: .
+    container_name: virtualLibrary
+    ports:
+      - "8080:8080"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+
+  postgres:
+    image: postgres:13.1
+    environment:
+      POSTGRES_DB: library_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+

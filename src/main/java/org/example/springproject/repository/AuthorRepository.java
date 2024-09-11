@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface AuthorRepository extends JpaRepository<Author, Long> {
     @Override
-    @Query(value = "SELECT author from Author author JOIN FETCH author.books WHERE author.id=:id")
+    @Query(value = "SELECT author from Author author LEFT JOIN FETCH author.books WHERE author.id=:id")
     Optional<Author> findById(Long id);
 
     @Query(value = "SELECT author FROM Author author JOIN FETCH author.books")
