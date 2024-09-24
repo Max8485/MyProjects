@@ -3,8 +3,6 @@ package org.example.springproject.service.impl;
 import org.example.springproject.TestDataProvider;
 import org.example.springproject.entity.Author;
 import org.example.springproject.entity.Book;
-import org.example.springproject.exceptions.AuthorNotFoundException;
-import org.example.springproject.exceptions.BookNotFoundException;
 import org.example.springproject.repository.AuthorRepository;
 import org.example.springproject.repository.BookRepository;
 import org.example.springproject.service.BookService;
@@ -95,8 +93,6 @@ class BookServiceImplTest {
         Assertions.assertEquals(newTitle, foundedBook.getTitle());
 
         //buildBookWithAuthor() - написать метод
-
-
     }
 
     @Test

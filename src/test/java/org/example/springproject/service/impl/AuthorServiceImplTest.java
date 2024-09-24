@@ -3,12 +3,14 @@ package org.example.springproject.service.impl;
 import org.example.springproject.TestDataProvider;
 import org.example.springproject.entity.Author;
 import org.example.springproject.entity.Book;
+import org.example.springproject.exceptions.AuthorNotFoundException;
 import org.example.springproject.repository.AuthorRepository;
 import org.example.springproject.repository.BookRepository;
 import org.example.springproject.service.AuthorService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -23,14 +25,12 @@ import static org.example.springproject.TestDataProvider.buildAuthor;
 @SpringBootTest
 @ActiveProfiles("test")
 class AuthorServiceImplTest {
-
     private final AuthorService authorService;
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
 
     @Autowired
     AuthorServiceImplTest(AuthorService authorService, AuthorRepository authorRepository, BookRepository bookRepository) {
-
         this.authorService = authorService;
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
@@ -96,13 +96,18 @@ class AuthorServiceImplTest {
     }
 
     @Test
+    void findAuthorByIdShouldThrows() {
+        Assertions.assertThrows(AuthorNotFoundException.class, () -> authorService.findAuthorById(Long.MAX_VALUE));
+    }
+
+
+    @Test
     void save() { //работает!
         Author author = buildAuthor(1);
         authorService.save(author);
 
         Author foundAuthorById = authorService.findAuthorById(author.getId());
 
-//        Assertions.assertEquals(author, foundAuthorById);
         Assertions.assertEquals(author.getFirstName(), foundAuthorById.getFirstName());
         Assertions.assertEquals(author.getLastName(), foundAuthorById.getLastName());
         Assertions.assertEquals(author.getMiddleName(), foundAuthorById.getMiddleName());

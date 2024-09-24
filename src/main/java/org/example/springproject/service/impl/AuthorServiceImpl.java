@@ -17,7 +17,7 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
 
     @Override
-    public Page<Author> findAll(Pageable pageable) { //mapstruct! написать тесты для сервиса, docker
+    public Page<Author> findAll(Pageable pageable) {
         return authorRepository.findAll(pageable).map(author -> {
             author.setBooks(null);
             return author;
