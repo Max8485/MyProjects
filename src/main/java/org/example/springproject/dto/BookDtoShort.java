@@ -7,7 +7,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 public class BookDtoShort {
+    private Long id;
 
     private AuthorDto author;
 

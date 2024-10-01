@@ -18,10 +18,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Page<Author> findAll(Pageable pageable) {
-        return authorRepository.findAll(pageable).map(author -> {
-            author.setBooks(null);
-            return author;
-        });
+        return authorRepository.findAll(pageable);
     }
 
     @Override

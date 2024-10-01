@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AuthorDto {
@@ -27,5 +28,5 @@ public class AuthorDto {
     @JsonFormat(pattern="dd.MM.yyyy")
     private LocalDate dateOfBirth;
 
-    private List<BookDto> books;
+    private List<BookDto> booksList;
 }

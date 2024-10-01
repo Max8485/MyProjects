@@ -3,8 +3,8 @@ package org.example.springproject.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.springproject.dto.AuthorDto;
 import org.example.springproject.entity.Author;
+import org.example.springproject.mapper.AuthorDtoMapper;
 import org.example.springproject.service.AuthorService;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -14,40 +14,38 @@ import org.springframework.web.bind.annotation.*;
 public class AuthorController {
 
     private final AuthorService authorService;
-    private final ModelMapper modelMapper;
+    private final AuthorDtoMapper mapper;
 
-    @GetMapping("/api/v1/authors")
+    @GetMapping("/api/v1/authors") //работает!
     public Page<AuthorDto> findAll(@RequestParam(name = "extended") boolean isExtended,
                                    Pageable pageable) { //
-        Page<Author> authorPage = null;
         if (isExtended) {
-            authorPage = authorService.findAllWithBooks(pageable);
+            return authorService.findAllWithBooks(pageable).map(mapper::toDtoWithBooks);
         } else {
-            authorPage = authorService.findAll(pageable);
+            return authorService.findAll(pageable).map(mapper::toShortDto);
         }
-        return authorPage.map(author -> modelMapper.map(author, AuthorDto.class));
     }
 
-    @PostMapping("/api/v1/authors") //работает!
+    @PostMapping("/api/v1/authors") // сейв проходит! доработать?
     public AuthorDto save(@RequestBody AuthorDto authorDTO) {
-        Author author = modelMapper.map(authorDTO, Author.class);
-        return modelMapper.map(authorService.save(author), AuthorDto.class);
+        Author entity = mapper.toEntityAuthor(authorDTO);
+        return mapper.toDtoWithBooks(authorService.save(entity));
     }
 
     @GetMapping("/api/v1/authors/{id}") //работает!
     public AuthorDto findAuthorById(@PathVariable(name = "id") long id) {
-        Author author = authorService.findAuthorById(id);
-        return modelMapper.map(author, AuthorDto.class);
+        return mapper.toDtoWithBooks(authorService.findAuthorById(id));
     }
 
-    @PatchMapping("/api/v1/authors/{id}")  //Работает!
+    @PatchMapping("/api/v1/authors/{id}")  // обновляет! доработать?
     public void updateAuthor(@RequestBody AuthorDto authorDto,
                              @PathVariable(name = "id") long id) {
-        Author author = modelMapper.map(authorDto, Author.class);
-        authorService.updateAuthor(author, id);
+        Author entity = mapper.toEntityAuthor(authorDto);
+        authorService.updateAuthor(entity, id);
+
     }
 
-    @DeleteMapping("/api/v1/authors/{id}")
+    @DeleteMapping("/api/v1/authors/{id}") //работает!
     public void delete(@PathVariable(name = "id") long id) {
         authorService.delete(id);
     }
