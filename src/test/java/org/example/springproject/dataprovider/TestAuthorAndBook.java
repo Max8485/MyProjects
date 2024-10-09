@@ -1,4 +1,4 @@
-package org.example.springproject;
+package org.example.springproject.dataprovider;
 
 import org.example.springproject.dto.AuthorDto;
 import org.example.springproject.dto.BookDto;
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class TestDataProvider {
+public class TestAuthorAndBook {
 
     public static Author buildAuthor(int index) {
         return Author.builder()
@@ -21,7 +21,7 @@ public class TestDataProvider {
                 .build();
     }
 
-    public static AuthorDto buildAuthorDto(int index) { //нужен ли для тестов маппера?
+    public static AuthorDto buildAuthorDto(int index) {
         return AuthorDto.builder()
                 .firstName("TestFirstName" + index)
                 .lastName("TestLastName" + index)
@@ -36,13 +36,13 @@ public class TestDataProvider {
                 .build();
     }
 
-    public static BookDtoShort buildBookDtoShort(int index) { //нужен ли для тестов маппера?
+    public static BookDtoShort buildBookDtoShort(int index) {
         return BookDtoShort.builder()
                 .title("TestTitle" + index)
                 .build();
     }
 
-    public static BookDto buildBookDto(int index, Long id) { //нужен ли для тестов маппера?
+    public static BookDto buildBookDto(int index, Long id) {
         return BookDto.builder()
                 .id(id)
                 .title("TestTitle" + index)
@@ -51,9 +51,9 @@ public class TestDataProvider {
 
     public static List<Author> buildAuthorWithBooks(int countAuthors, int countBooks) {
         return IntStream.range(0, countAuthors)
-                .mapToObj(TestDataProvider::buildAuthor)
+                .mapToObj(TestAuthorAndBook::buildAuthor)
                 .peek(author -> author.setBooks(
-                                IntStream.range(0, countBooks).mapToObj(TestDataProvider::buildBook)
+                                IntStream.range(0, countBooks).mapToObj(TestAuthorAndBook::buildBook)
                                         .peek(book -> book.setAuthor(author))
                                         .toList()
                         )

@@ -1,6 +1,6 @@
 package org.example.springproject.mapper;
 
-import org.example.springproject.TestDataProvider;
+import org.example.springproject.dataprovider.TestAuthorAndBook;
 import org.example.springproject.dto.AuthorDto;
 import org.example.springproject.dto.BookDto;
 import org.example.springproject.dto.BookDtoShort;
@@ -15,7 +15,7 @@ class BookDtoMapperTest {
     @Test
     void toBookDto() {
         BookDtoMapper mapper = Mappers.getMapper(BookDtoMapper.class);
-        Book book = TestDataProvider.buildBook(1);
+        Book book = TestAuthorAndBook.buildBook(1);
         BookDto bookDto = mapper.toBookDto(book);
 
         Assertions.assertEquals(book.getTitle(), bookDto.getTitle());
@@ -24,11 +24,11 @@ class BookDtoMapperTest {
     @Test
     void toEntity() {
         AuthorDtoMapper mapperAuthor = Mappers.getMapper(AuthorDtoMapper.class);
-        AuthorDto authorDto = TestDataProvider.buildAuthorDto(1);
+        AuthorDto authorDto = TestAuthorAndBook.buildAuthorDto(1);
         Author author = mapperAuthor.toEntityAuthor(authorDto);
 
         BookDtoMapper mapper = Mappers.getMapper(BookDtoMapper.class);
-        BookDtoShort bookDtoShort = TestDataProvider.buildBookDtoShort(1);
+        BookDtoShort bookDtoShort = TestAuthorAndBook.buildBookDtoShort(1);
         bookDtoShort.setAuthor(authorDto);
         Book book = mapper.toEntity(bookDtoShort);
         book.setAuthor(author);
@@ -41,7 +41,7 @@ class BookDtoMapperTest {
     @Test
     void toEntity2() { //работает!
         BookDtoMapper mapper = Mappers.getMapper(BookDtoMapper.class);
-        BookDto bookDto = TestDataProvider.buildBookDto(1, 1L);
+        BookDto bookDto = TestAuthorAndBook.buildBookDto(1, 1L);
 
         Book book = mapper.toEntity2(bookDto);
 

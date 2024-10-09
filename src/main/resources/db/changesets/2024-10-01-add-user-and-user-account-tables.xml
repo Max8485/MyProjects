@@ -1,0 +1,56 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="2024-10-01-add-user-and-user-account-tables" author="Maxim">
+        <createTable tableName="application_user" remarks="Таблица с пользователями">
+            <column name="id" type="bigint" autoIncrement="true" remarks="Id пользователя">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="first_name" type="text" remarks="Имя пользователя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="text" remarks="Фамилия пользователя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="middle_name" type="text" remarks="Отчество пользователя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_of_birth" type="date" remarks="Дата рождения пользователя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="timestamp" remarks="Дата создания пользователя">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="application_user_account" remarks="Таблица с учетными записями пользователей">
+            <column name="id" type="bigint" remarks="Id учетной записи(shared key with application_user)">
+                <constraints primaryKey="true"
+                             foreignKeyName="fk_application_user_id"
+                             references="application_user(id)"/>
+            </column>
+            <column name="password" type="text" remarks="Пароль пользователя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="login" type="text" remarks="Логин пользователя">
+                <constraints nullable="false"
+                             unique="true"/>
+            </column>
+            <column name="account_non_expired" type="boolean" remarks="Срок действия учетной записи пользователя не истек">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_non_locked" type="boolean" remarks="Учетная запись пользователя не заблокирована">
+                <constraints nullable="false"/>
+            </column>
+            <column name="credentials_non_expired" type="boolean" remarks="Срок действия сертификата пользователя не истек">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="boolean" remarks="Включен">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

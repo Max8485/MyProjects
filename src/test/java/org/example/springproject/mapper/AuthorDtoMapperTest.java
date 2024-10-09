@@ -1,6 +1,6 @@
 package org.example.springproject.mapper;
 
-import org.example.springproject.TestDataProvider;
+import org.example.springproject.dataprovider.TestAuthorAndBook;
 import org.example.springproject.dto.AuthorDto;
 import org.example.springproject.entity.Author;
 import org.junit.jupiter.api.Assertions;
@@ -14,7 +14,7 @@ class AuthorDtoMapperTest {
 
     @Test
     void toShortDto() { //работает!
-        Author author = TestDataProvider.buildAuthor(1);
+        Author author = TestAuthorAndBook.buildAuthor(1);
         AuthorDto authorShortDto = mapper.toShortDto(author);
 
         Assertions.assertEquals(author.getId(), authorShortDto.getId());
@@ -26,7 +26,7 @@ class AuthorDtoMapperTest {
 
     @Test
     void toDtoWithBooks() { //работает!
-        List<Author> authorList = TestDataProvider.buildAuthorWithBooks(1, 1);
+        List<Author> authorList = TestAuthorAndBook.buildAuthorWithBooks(1, 1);
         Author author = authorList.get(0);
         AuthorDto authorDtoWithBooks = mapper.toDtoWithBooks(author);
 
@@ -43,7 +43,7 @@ class AuthorDtoMapperTest {
 
     @Test
     void toEntityAuthor() { //работает!
-        AuthorDto authorDto = TestDataProvider.buildAuthorDto(1);
+        AuthorDto authorDto = TestAuthorAndBook.buildAuthorDto(1);
         Author author = mapper.toEntityAuthor(authorDto);
 
         Assertions.assertEquals(authorDto.getFirstName(), author.getFirstName());

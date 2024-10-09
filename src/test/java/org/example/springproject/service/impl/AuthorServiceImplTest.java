@@ -1,6 +1,6 @@
 package org.example.springproject.service.impl;
 
-import org.example.springproject.TestDataProvider;
+import org.example.springproject.dataprovider.TestAuthorAndBook;
 import org.example.springproject.entity.Author;
 import org.example.springproject.entity.Book;
 import org.example.springproject.exceptions.AuthorNotFoundException;
@@ -10,7 +10,6 @@ import org.example.springproject.service.AuthorService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -20,7 +19,8 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.example.springproject.TestDataProvider.buildAuthor;
+//import static org.example.springproject.TestDataProvider.buildAuthor;
+import static org.example.springproject.dataprovider.TestAuthorAndBook.buildAuthor;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -59,9 +59,9 @@ class AuthorServiceImplTest {
 
     private List<Author> buildAuthorWithBooks(int countAuthors, int countBooks) {
         return IntStream.range(0, countAuthors)
-                .mapToObj(TestDataProvider::buildAuthor)
+                .mapToObj(TestAuthorAndBook::buildAuthor)
                 .peek(author -> author.setBooks(
-                                IntStream.range(0, countBooks).mapToObj(TestDataProvider::buildBook)
+                                IntStream.range(0, countBooks).mapToObj(TestAuthorAndBook::buildBook)
                                         .peek(book -> book.setAuthor(author))
                                         .toList()
                         )

@@ -1,6 +1,6 @@
 package org.example.springproject.service.impl;
 
-import org.example.springproject.TestDataProvider;
+import org.example.springproject.dataprovider.TestAuthorAndBook;
 import org.example.springproject.entity.Author;
 import org.example.springproject.entity.Book;
 import org.example.springproject.repository.AuthorRepository;
@@ -16,8 +16,10 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.example.springproject.TestDataProvider.buildAuthor;
-import static org.example.springproject.TestDataProvider.buildBook;
+//import static org.example.springproject.TestDataProvider.buildAuthor;
+//import static org.example.springproject.TestDataProvider.buildBook;
+import static org.example.springproject.dataprovider.TestAuthorAndBook.buildAuthor;
+import static org.example.springproject.dataprovider.TestAuthorAndBook.buildBook;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -41,10 +43,10 @@ class BookServiceImplTest {
 
     private List<Author> buildAuthorWithBooks(int countAuthors, int countBooks) {
         return IntStream.range(0, countAuthors)
-                .mapToObj(TestDataProvider::buildAuthor)
+                .mapToObj(TestAuthorAndBook::buildAuthor)
                 .peek(author -> author.setBooks(
                         IntStream.range(0, countBooks)
-                                .mapToObj(TestDataProvider::buildBook)
+                                .mapToObj(TestAuthorAndBook::buildBook)
                                 .peek(book -> book.setAuthor(author))
                                 .toList()
                 )).toList();
