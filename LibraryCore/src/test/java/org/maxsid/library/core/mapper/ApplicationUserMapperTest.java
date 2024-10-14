@@ -34,22 +34,4 @@ class ApplicationUserMapperTest {
         Assertions.assertNotNull(user.getMiddleName());
         Assertions.assertNotNull(user.getDateOfBirth());
     }
-
-//    @Test
-//    void toUserAccountDto() {
-//        ApplicationUserAccount userAccount = TestUser.buildUserAccount(1);
-//        ApplicationUserAccountDto userAccountDto = mapper.toUserAccountDto(userAccount);
-//
-//        Assertions.assertEquals(userAccount.getPassword(), userAccountDto.getPassword());
-//        Assertions.assertEquals(userAccount.getLogin(), userAccountDto.getLogin());
-//    }
-
-//    @Test
-//    void toUserAccount() {
-//        ApplicationUserAccountDto userAccountDto = TestUser.buildUserAccountDto(1);
-//        ApplicationUserAccount userAccount = mapper.toUserAccount(userAccountDto);
-//
-//        Assertions.assertEquals(userAccountDto.getPassword(), userAccount.getPassword());
-//        Assertions.assertEquals(userAccountDto.getLogin(), userAccount.getLogin());
-//    }
 }

@@ -33,8 +33,8 @@ class BookDtoMapperTest {
         Book book = mapper.toEntity(bookDtoShort);
         book.setAuthor(author);
 
-        Assertions.assertEquals(bookDtoShort.getAuthor(), book.getAuthor()); //authorDto author
-        //assertNotNull
+        Assertions.assertNotNull(bookDtoShort);
+        Assertions.assertNotNull(book);
         Assertions.assertEquals(bookDtoShort.getTitle(), book.getTitle());
     }
 

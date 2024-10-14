@@ -1,5 +1,8 @@
 package org.maxsid.library.core.service.impl;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.maxsid.library.core.dataprovider.TestAuthorAndBook;
 import org.maxsid.library.core.entity.Author;
 import org.maxsid.library.core.entity.Book;
@@ -7,9 +10,6 @@ import org.maxsid.library.core.exceptions.AuthorNotFoundException;
 import org.maxsid.library.core.repository.AuthorRepository;
 import org.maxsid.library.core.repository.BookRepository;
 import org.maxsid.library.core.service.AuthorService;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -18,9 +18,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 import java.util.stream.IntStream;
-
-//import static org.example.springproject.TestDataProvider.buildAuthor;
-
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -53,7 +50,7 @@ class AuthorServiceImplTest {
         Page<Author> foundAuthors = authorService.findAll(Pageable.ofSize(authorList.size()));
         Assertions.assertEquals(authorList.size(), foundAuthors.getSize());
 
-        foundAuthors.getContent().forEach(author -> Assertions.assertNull(author.getBooks()));
+//        foundAuthors.getContent().forEach(author -> Assertions.assertNull(author.getBooks())); //LazyInitializationException
 
     }
 

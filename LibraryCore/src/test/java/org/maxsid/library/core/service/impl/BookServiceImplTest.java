@@ -1,24 +1,20 @@
 package org.maxsid.library.core.service.impl;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.maxsid.library.core.dataprovider.TestAuthorAndBook;
 import org.maxsid.library.core.entity.Author;
 import org.maxsid.library.core.entity.Book;
 import org.maxsid.library.core.repository.AuthorRepository;
 import org.maxsid.library.core.repository.BookRepository;
 import org.maxsid.library.core.service.BookService;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 import java.util.stream.IntStream;
-
-//import static org.example.springproject.TestDataProvider.buildAuthor;
-//import static org.example.springproject.TestDataProvider.buildBook;
-
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -92,8 +88,6 @@ class BookServiceImplTest {
         Book foundedBook = bookService.findBookById(book.getId());
 
         Assertions.assertEquals(newTitle, foundedBook.getTitle());
-
-        //buildBookWithAuthor() - написать метод
     }
 
     @Test
