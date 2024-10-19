@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/library_db
+    username: postgres
+    password: postgres
+
+  jpa:
+    show-sql: true
+    open-in-view: false
+
+server:
+  port: 8081
+
+jwt:
+  expirationInMinutes: 2
+  key: secreteeffffffffffffffffffffffffffffffffffffffffffaf
