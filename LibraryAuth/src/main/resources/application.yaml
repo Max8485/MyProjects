@@ -12,5 +12,5 @@ server:
   port: 8081
 
 jwt:
-  expirationInMinutes: 2
+  expirationInMinutes: 10
   key: secreteeffffffffffffffffffffffffffffffffffffffffffaf
