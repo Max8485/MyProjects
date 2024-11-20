@@ -39,6 +39,11 @@ public class ApplicationUserAccount implements UserDetails {
     @Column(name = "enabled")
     private boolean isEnabled;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @MapsId
+    @JoinColumn(name = "id")
+    private ApplicationUser applicationUser;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.emptySet();

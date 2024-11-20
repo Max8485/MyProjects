@@ -1,12 +1,11 @@
-package org.maxsid.library.core.service.impl;
+package org.maxsid.library.auth.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.maxsid.library.core.entity.ApplicationUser;
-import org.maxsid.library.core.entity.ApplicationUserAccount;
-import org.maxsid.library.core.repository.ApplicationUserAccountRepository;
-import org.maxsid.library.core.repository.ApplicationUserRepository;
-import org.maxsid.library.core.service.RegistrationService;
+import org.maxsid.library.auth.entity.ApplicationUser;
+import org.maxsid.library.auth.entity.ApplicationUserAccount;
+import org.maxsid.library.auth.repository.ApplicationUserAccountRepository;
+import org.maxsid.library.auth.service.RegistrationService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +13,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RegistrationServiceImpl implements RegistrationService {
 
-    private final ApplicationUserRepository userRepository;
     private final ApplicationUserAccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
     @Override
     public void registerUser(ApplicationUser user, ApplicationUserAccount userAccount) {
-//         userRepository.save(user);
         userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
         userAccount.setApplicationUser(user);
         accountRepository.save(userAccount);

@@ -29,8 +29,12 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/api/v1/registration").permitAll()
+                        .requestMatchers("/api/v1/authors").hasRole("GUEST")
+                        .requestMatchers("/api/v1/authors/{id}").hasRole("GUEST")
+                        .requestMatchers("/api/v1/books/{id}").hasRole("GUEST")
+                        .requestMatchers("/**").hasRole("ADMIN") //переместили сюда и заработало! Видимо, /** должна быть в конце.
                         .anyRequest().authenticated());
+
         return http.build();
     }
 

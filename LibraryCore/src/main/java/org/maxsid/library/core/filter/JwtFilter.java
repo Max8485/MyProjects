@@ -12,11 +12,13 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
@@ -40,13 +42,23 @@ public class JwtFilter extends OncePerRequestFilter {
                     .parseClaimsJws(jwt);
 
             Claims body = claimsJws.getBody();
-
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(body.getSubject(), "", Collections.emptySet());
+            String subject = body.getSubject();
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(subject, "", resolveRole(subject));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             filterChain.doFilter(request, response);
         } catch (JwtException e) {
             throw new IllegalStateException(String.format("Токен не действителен: %s", jwt));
         }
+    }
+
+    private Set<SimpleGrantedAuthority> resolveRole(String subject) {
+        Set<SimpleGrantedAuthority> roles = new HashSet<>();
+        if (subject.equals("max")) {
+            roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        } else {
+            roles.add(new SimpleGrantedAuthority("ROLE_GUEST"));
+        }
+        return roles;
     }
 }
