@@ -19,6 +19,7 @@ import java.util.Collections;
 public class ApplicationUserAccount implements UserDetails {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "password")
@@ -28,21 +29,16 @@ public class ApplicationUserAccount implements UserDetails {
     private String login;
 
     @Column(name = "account_non_expired")
-    private boolean isAccountNonExpired;
+    private boolean isAccountNonExpired = true;
 
     @Column(name = "account_non_locked")
-    private boolean isAccountNonLocked;
+    private boolean isAccountNonLocked = true;
 
     @Column(name = "credentials_non_expired")
-    private boolean isCredentialsNonExpired;
+    private boolean isCredentialsNonExpired = true;
 
     @Column(name = "enabled")
-    private boolean isEnabled;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @MapsId
-    @JoinColumn(name = "id")
-    private ApplicationUser applicationUser;
+    private boolean isEnabled = true;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -2,7 +2,6 @@ package org.maxsid.library.auth.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.maxsid.library.auth.entity.ApplicationUser;
 import org.maxsid.library.auth.entity.ApplicationUserAccount;
 import org.maxsid.library.auth.repository.ApplicationUserAccountRepository;
 import org.maxsid.library.auth.service.RegistrationService;
@@ -18,9 +17,8 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Transactional
     @Override
-    public void registerUser(ApplicationUser user, ApplicationUserAccount userAccount) {
+    public void registerUser(ApplicationUserAccount userAccount) {
         userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
-        userAccount.setApplicationUser(user);
         accountRepository.save(userAccount);
     }
 }
