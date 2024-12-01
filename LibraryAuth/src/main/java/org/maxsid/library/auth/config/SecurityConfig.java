@@ -2,6 +2,7 @@ package org.maxsid.library.auth.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,17 +15,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    //создать в этом микросервисе БД application user account и убрать его из core, разрывая связь one to one
-    //сделать общий идентификатор, который будет связывать application user и application user account
-    //создать фильтр, который будет по токену идентифицировать пользователя
-    //транзакция в нескольких БД
-    //надо сделать так, чтобы при регистрации пользователя в Auth происходило оповещение Core, что такой пользователь зарегался.
-    //Kafka
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
@@ -41,6 +37,16 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
+    @Bean
+    public HttpHeaders headers() {
+        return new HttpHeaders();
     }
 
     @Bean

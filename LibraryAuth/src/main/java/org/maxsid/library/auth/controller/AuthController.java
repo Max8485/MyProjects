@@ -3,8 +3,6 @@ package org.maxsid.library.auth.controller;
 import lombok.RequiredArgsConstructor;
 import org.maxsid.library.auth.dto.ApplicationUserDto;
 import org.maxsid.library.auth.dto.AuthRequestDto;
-import org.maxsid.library.auth.entity.ApplicationUserAccount;
-import org.maxsid.library.auth.mapper.ApplicationUserMapper;
 import org.maxsid.library.auth.service.AuthService;
 import org.maxsid.library.auth.service.RegistrationService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,13 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
-    private final ApplicationUserMapper mapper;
     private final RegistrationService registrationService;
 
     @PostMapping("/api/v1/registration")
     public void registrationPage(@RequestBody ApplicationUserDto userDto) {
-        ApplicationUserAccount userAccount = mapper.toUserAccount(userDto);
-        registrationService.registerUser(userAccount);
+        registrationService.registerUser(userDto);
     }
 
     @PostMapping("/api/v1/auth/token")

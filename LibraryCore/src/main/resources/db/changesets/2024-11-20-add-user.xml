@@ -9,6 +9,10 @@
             <column name="id" type="bigint" autoIncrement="true" remarks="Id пользователя">
                 <constraints primaryKey="true"/>
             </column>
+            <column name="login" type="text" remarks="Логин пользователя">
+                <constraints nullable="false"
+                             unique="true"/>
+            </column>
             <column name="first_name" type="text" remarks="Имя пользователя">
                 <constraints nullable="false"/>
             </column>

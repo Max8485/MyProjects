@@ -20,6 +20,9 @@ public class ApplicationUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "login", unique = true) //добавляем логин
+    private String login;
+
     @Column(name = "first_name")
     private String firstName;
 

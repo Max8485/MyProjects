@@ -10,10 +10,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Builder
+//@Builder
 public class ApplicationUserDto {
 
-    private String password;
+//    private String password;
 
     private String login;
 

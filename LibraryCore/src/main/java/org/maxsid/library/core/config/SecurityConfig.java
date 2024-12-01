@@ -32,6 +32,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/authors").hasRole("GUEST")
                         .requestMatchers("/api/v1/authors/{id}").hasRole("GUEST")
                         .requestMatchers("/api/v1/books/{id}").hasRole("GUEST")
+                        .requestMatchers("/api/v1/account").permitAll() //работает
                         .requestMatchers("/**").hasRole("ADMIN") //переместили сюда и заработало! Видимо, /** должна быть в конце.
                         .anyRequest().authenticated());
 
