@@ -6,6 +6,7 @@ import org.maxsid.library.auth.dto.ApplicationUserDto;
 import org.maxsid.library.auth.entity.ApplicationUserAccount;
 import org.maxsid.library.auth.mapper.ApplicationUserMapper;
 import org.maxsid.library.auth.repository.ApplicationUserAccountRepository;
+import org.maxsid.library.auth.service.LibraryCoreService;
 import org.maxsid.library.auth.service.RegistrationService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private final ApplicationUserAccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
-    private final LibraryCoreServiceImpl libraryCoreService;
+    private final LibraryCoreService libraryCoreService;
     private final ApplicationUserMapper mapper;
 
     @Transactional

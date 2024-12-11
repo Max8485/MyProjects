@@ -1,3 +1,3 @@
 FROM openjdk:17-alpine
-COPY target/*.jar opt/auth.jar
-ENTRYPOINT ["java", "-jar", "opt/auth.jar"]
+COPY target/*.jar opt/app.jar
+ENTRYPOINT ["java", "-jar", "opt/app.jar"]

@@ -18,7 +18,7 @@ public class TestUser {
 
     public static ApplicationUserDto buildUserDto(int index) {
         return ApplicationUserDto.builder()
-                .password("password" + index)
+//                .password("password" + index)
                 .login("login" + index)
                 .firstName("Сидоров" + index)
                 .lastName("Максим" + index)

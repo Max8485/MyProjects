@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres_auth:5432/application_user_account
+    username: postgres
+    password: postgres
+server:
+  port: 8081

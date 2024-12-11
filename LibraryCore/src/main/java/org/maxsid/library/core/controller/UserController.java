@@ -5,9 +5,9 @@ import org.maxsid.library.core.dto.ApplicationUserDto;
 import org.maxsid.library.core.entity.ApplicationUser;
 import org.maxsid.library.core.mapper.ApplicationUserMapper;
 import org.maxsid.library.core.service.ApplicationUserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,11 +22,4 @@ public class UserController {
         ApplicationUser user = mapper.toUser(userDto);
         userService.saveUser(user);
     }
-
-//    @PostMapping("/api/v1/account")
-//    public ResponseEntity<HttpStatus> saveUser(@RequestBody ApplicationUserDto userDto) {
-//        ApplicationUser user = mapper.toUser(userDto);
-//        userService.saveUser(user);
-//     return ResponseEntity.ok(HttpStatus.OK);
-//    }
 }

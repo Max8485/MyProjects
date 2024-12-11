@@ -45,7 +45,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public HttpHeaders headers() {
+    public HttpHeaders headers() { //убрать
         return new HttpHeaders();
     }
 

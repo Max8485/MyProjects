@@ -7,3 +7,11 @@ spring:
 
 jwt:
   key: secreteeffffffffffffffffffffffffffffffffffffffffffaf
+
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: group_id
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.JsonDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.JsonDeserializer

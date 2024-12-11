@@ -2,15 +2,16 @@ package org.maxsid.library.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.maxsid.library.auth.dto.ApplicationUserDto;
-import org.maxsid.library.auth.entity.ApplicationUserAccount;
 import org.maxsid.library.auth.service.LibraryCoreService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
 @RequiredArgsConstructor
-public class LibraryCoreServiceImpl implements LibraryCoreService {
+@ConditionalOnProperty(name = "serviceCommunication", havingValue = "sync")
+public class LibraryCoreServiceSync implements LibraryCoreService {
 
     private final RestTemplate restTemplate;
     private final HttpHeaders headers;
