@@ -9,6 +9,8 @@ public class ConsumerServiceImpl implements ConsumerService {
     @KafkaListener(topics = "user-registration", groupId = "core-service")
     @Override
     public void consumeMessage(ApplicationUserDto userDto) {
+        System.out.println("------------------------------------------");
         System.out.println(userDto);
+        System.out.println("------------------------------------------");
     }
 }

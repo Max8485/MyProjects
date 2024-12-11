@@ -5,13 +5,18 @@ spring:
     show-sql: true
     open-in-view: false
 
-jwt:
-  key: secreteeffffffffffffffffffffffffffffffffffffffffffaf
-
   kafka:
     consumer:
       bootstrap-servers: localhost:9092
-      group-id: group_id
+      group-id: core-service
       auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.JsonDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.JsonDeserializer
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+
+jwt:
+  key: secreteeffffffffffffffffffffffffffffffffffffffffffaf
