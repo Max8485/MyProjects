@@ -11,6 +11,7 @@
     <modules>
         <module>LibraryCore</module>
         <module>LibraryAuth</module>
+        <module>LibraryCommon</module>
     </modules>
 
     <parent>

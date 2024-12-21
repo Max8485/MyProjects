@@ -1,6 +1,5 @@
 package org.maxsid.library.core.dataprovider;
 
-import org.maxsid.library.core.dto.ApplicationUserDto;
 import org.maxsid.library.core.entity.ApplicationUser;
 
 import java.time.LocalDate;

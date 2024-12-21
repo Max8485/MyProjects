@@ -2,12 +2,12 @@ package org.maxsid.library.auth.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.maxsid.library.auth.dto.ApplicationUserDto;
 import org.maxsid.library.auth.entity.ApplicationUserAccount;
 import org.maxsid.library.auth.mapper.ApplicationUserMapper;
 import org.maxsid.library.auth.repository.ApplicationUserAccountRepository;
 import org.maxsid.library.auth.service.LibraryCoreService;
 import org.maxsid.library.auth.service.RegistrationService;
+import org.maxsid.library.dto.ApplicationUserDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

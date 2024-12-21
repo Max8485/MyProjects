@@ -1,8 +1,8 @@
 package org.maxsid.library.core.mapper;
 
 import org.mapstruct.Mapper;
-import org.maxsid.library.core.dto.ApplicationUserDto;
 import org.maxsid.library.core.entity.ApplicationUser;
+import org.maxsid.library.dto.ApplicationUserDto;
 
 @Mapper
 public interface ApplicationUserMapper {

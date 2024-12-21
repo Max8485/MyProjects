@@ -1,6 +1,7 @@
-package org.maxsid.library.core.dto;
+package org.maxsid.library.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -11,7 +12,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApplicationUserDto {
+
+    private String password;
 
     private String login;
 
@@ -21,6 +25,6 @@ public class ApplicationUserDto {
 
     private String middleName;
 
-    @JsonFormat(pattern="dd.MM.yyyy")
+    @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate dateOfBirth;
 }

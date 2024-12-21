@@ -1,10 +1,10 @@
 package org.maxsid.library.core.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.maxsid.library.core.dto.ApplicationUserDto;
 import org.maxsid.library.core.entity.ApplicationUser;
 import org.maxsid.library.core.mapper.ApplicationUserMapper;
 import org.maxsid.library.core.service.ApplicationUserService;
+import org.maxsid.library.dto.ApplicationUserDto;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;

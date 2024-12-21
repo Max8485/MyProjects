@@ -1,10 +1,12 @@
 package org.maxsid.library.auth.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.maxsid.library.auth.dto.ApplicationUserDto;
+
 import org.maxsid.library.auth.dto.AuthRequestDto;
 import org.maxsid.library.auth.service.AuthService;
 import org.maxsid.library.auth.service.RegistrationService;
+//import org.maxsid.library.dto.ApplicationUserDtoAuth;
+import org.maxsid.library.dto.ApplicationUserDto;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;

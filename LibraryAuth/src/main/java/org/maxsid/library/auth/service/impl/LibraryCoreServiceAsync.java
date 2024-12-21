@@ -1,8 +1,8 @@
 package org.maxsid.library.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.maxsid.library.auth.dto.ApplicationUserDto;
 import org.maxsid.library.auth.service.LibraryCoreService;
+import org.maxsid.library.dto.ApplicationUserDto;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;

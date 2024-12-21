@@ -1,7 +1,6 @@
 package org.maxsid.library.auth.service;
 
-import org.maxsid.library.auth.dto.ApplicationUserDto;
-import org.maxsid.library.auth.entity.ApplicationUserAccount;
+import org.maxsid.library.dto.ApplicationUserDto;
 
 public interface RegistrationService {
 

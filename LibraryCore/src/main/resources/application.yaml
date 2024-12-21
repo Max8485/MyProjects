@@ -17,6 +17,10 @@ spring:
           json:
             trusted:
               packages: '*'
+      enable-auto-commit: false
+
+    listener:
+      ack-mode: manual_immediate
 
 jwt:
   key: secreteeffffffffffffffffffffffffffffffffffffffffffaf

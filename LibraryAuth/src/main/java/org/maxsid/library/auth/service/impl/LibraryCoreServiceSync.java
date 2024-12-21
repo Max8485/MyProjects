@@ -1,10 +1,12 @@
 package org.maxsid.library.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.maxsid.library.auth.dto.ApplicationUserDto;
 import org.maxsid.library.auth.service.LibraryCoreService;
+import org.maxsid.library.dto.ApplicationUserDto;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 

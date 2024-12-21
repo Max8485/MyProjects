@@ -13,6 +13,8 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
     private final ApplicationUserRepository userRepository;
     @Override
     public void saveUser(ApplicationUser user) {
-        userRepository.save(user);
+        throw new RuntimeException();
+
+//        userRepository.save(user);
     }
 }

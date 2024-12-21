@@ -1,7 +1,6 @@
 package org.maxsid.library.core.mapper;
 
 import org.maxsid.library.core.dataprovider.TestUser;
-import org.maxsid.library.core.dto.ApplicationUserDto;
 import org.maxsid.library.core.entity.ApplicationUser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
