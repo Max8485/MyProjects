@@ -29,11 +29,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/api/v1/authors").hasRole("GUEST")
-                        .requestMatchers("/api/v1/authors/{id}").hasRole("GUEST")
-                        .requestMatchers("/api/v1/books/{id}").hasRole("GUEST")
-                        .requestMatchers("/api/v1/account").permitAll() //работает
-                        .requestMatchers("/**").hasRole("ADMIN") //переместили сюда и заработало! Видимо, /** должна быть в конце.
+                        .requestMatchers("/api/v1/account").permitAll()
+                        .requestMatchers("/api/v1/authors").hasAnyRole("GUEST", "ADMIN")
+                        .requestMatchers("/api/v1/authors/{id}").hasAnyRole("GUEST", "ADMIN")
+                        .requestMatchers("/api/v1/books/{id}").hasAnyRole("GUEST", "ADMIN")
+                        .requestMatchers("/**").hasRole("ADMIN") //переместили сюда и заработало! /** должна быть в конце.
                         .anyRequest().authenticated());
 
         return http.build();
