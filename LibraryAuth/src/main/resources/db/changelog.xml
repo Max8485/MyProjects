@@ -3,4 +3,5 @@
                    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
     <include file="changesets/2024-11-20-add-user-account-table.xml" relativeToChangelogFile="true"/>
+    <include file="changesets/2025-01-10-add-role-table.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

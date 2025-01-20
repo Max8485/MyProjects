@@ -3,10 +3,12 @@ package org.maxsid.library.auth.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -40,9 +42,19 @@ public class ApplicationUserAccount implements UserDetails {
     @Column(name = "enabled")
     private boolean isEnabled = true;
 
+    @ManyToMany(fetch = FetchType.EAGER) //исправить на LAZY и написать кастомный запрос в репозиторий.
+    @JoinTable(name = "application_user_role_account_binding",
+            joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptySet();
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+        }
+        return authorities;
     }
 
     @Override

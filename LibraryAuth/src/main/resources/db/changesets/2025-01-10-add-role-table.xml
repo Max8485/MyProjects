@@ -1,0 +1,32 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="2025-01-10-add-role-table" author="Maxim">
+        <createTable tableName="application_user_role" remarks="Таблица с ролями пользователей">
+            <column name="id" type="integer" autoIncrement="true" remarks="Id роли">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="role" type="text" remarks="Роль пользователя">
+                <constraints nullable="false"
+                             unique="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="application_user_role_account_binding" remarks="Таблица маппинга роле на аккаунт">
+            <column name="account_id" type="integer" remarks="Id аккаунта">
+                <constraints foreignKeyName="account_id"
+                             nullable="false"
+                             references="application_user_account(id)"/>
+            </column>
+            <column name="role_id" type="integer" remarks="Роль пользователя">
+                <constraints foreignKeyName="role_id"
+                             nullable="false"
+                             references="application_user_role(id)"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="application_user_role_account_binding" columnNames="account_id, role_id"/>
+    </changeSet>
+</databaseChangeLog>

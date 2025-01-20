@@ -4,6 +4,7 @@ import org.maxsid.library.core.filter.JwtFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,10 +30,13 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/api/v1/account").permitAll()
-                        .requestMatchers("/api/v1/authors").hasAnyRole("GUEST", "ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/api/v1/authors").hasAnyRole("GUEST", "ADMIN")
                         .requestMatchers("/api/v1/authors/{id}").hasAnyRole("GUEST", "ADMIN")
                         .requestMatchers("/api/v1/books/{id}").hasAnyRole("GUEST", "ADMIN")
+                        .requestMatchers("/api/v1/account/{account_id}/book/{book_id}").hasRole("GUEST")
+                        .requestMatchers("/api/v1/account/return/book/{book_id}").hasRole("GUEST")
+                        .requestMatchers(HttpMethod.POST,"/api/v1/authors").hasRole("ADMIN") //работает!
+                        .requestMatchers("/api/v1/account").permitAll()
                         .requestMatchers("/**").hasRole("ADMIN") //переместили сюда и заработало! /** должна быть в конце.
                         .anyRequest().authenticated());
 

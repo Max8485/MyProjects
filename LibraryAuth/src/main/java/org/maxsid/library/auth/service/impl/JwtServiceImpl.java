@@ -27,6 +27,7 @@ public class JwtServiceImpl implements JwtService {
         Date creationDate = clock.now();
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
+                .claim("roles", userDetails.getAuthorities())
                 .setIssuedAt(creationDate)
                 .setExpiration(new Date(creationDate.getTime() + expirationInMinutes * 1000 * 60))
                 .signWith(SignatureAlgorithm.HS512, key)

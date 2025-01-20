@@ -17,8 +17,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
@@ -43,7 +45,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
             Claims body = claimsJws.getBody();
             String subject = body.getSubject();
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(subject, "", resolveRole(subject));
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(subject, "", resolveRole(body));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             filterChain.doFilter(request, response);
@@ -52,13 +54,11 @@ public class JwtFilter extends OncePerRequestFilter {
         }
     }
 
-    private Set<SimpleGrantedAuthority> resolveRole(String subject) {
-        Set<SimpleGrantedAuthority> roles = new HashSet<>();
-        if (subject.equals("max")) {
-            roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        } else {
-            roles.add(new SimpleGrantedAuthority("ROLE_GUEST"));
-        }
-        return roles;
+    private Set<SimpleGrantedAuthority> resolveRole(Claims body) {
+        List<Map<String, String>> roles = (List) body.get("roles");
+        Set<SimpleGrantedAuthority> authorities = roles.stream().map(role -> new SimpleGrantedAuthority(role.get("authority")))
+                .collect(Collectors.toSet());
+
+        return authorities;
     }
 }
