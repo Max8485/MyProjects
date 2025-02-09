@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,7 +21,7 @@ public class ApplicationUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "login", unique = true) //добавляем логин
+    @Column(name = "login", unique = true)
     private String login;
 
     @Column(name = "first_name")
@@ -38,4 +39,7 @@ public class ApplicationUser {
     @Column(name = "creation_date")
     @CreationTimestamp
     private LocalDate creationDate;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Book> books;
 }

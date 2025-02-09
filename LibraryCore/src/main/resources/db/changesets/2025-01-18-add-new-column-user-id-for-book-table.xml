@@ -1,0 +1,15 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="2025-01-18-add-new-column-user-id-for-book-table.xml" author="Maxim">
+        <addColumn tableName="book">
+            <column name="user_id" type="bigint" remarks="Id пользователя">
+                <constraints foreignKeyName="user_id"
+                references="application_user(id)"/>
+            </column>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

@@ -5,4 +5,5 @@
     <include file="changesets/2024-07-28-init-schema.xml" relativeToChangelogFile="true"/>
     <include file="changesets/2024-08-23-add-unique-idx-to-author.xml" relativeToChangelogFile="true"/>
     <include file="changesets/2024-11-20-add-user.xml" relativeToChangelogFile="true"/>
+    <include file="changesets/2025-01-18-add-new-column-user-id-for-book-table.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
