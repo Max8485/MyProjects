@@ -1,6 +1,7 @@
 package org.maxsid.library.core.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.maxsid.library.core.entity.ApplicationUser;
 import org.maxsid.library.core.exceptions.BookNotFoundException;
@@ -9,6 +10,7 @@ import org.maxsid.library.core.repository.ApplicationUserRepository;
 import org.maxsid.library.core.repository.BookRepository;
 import org.maxsid.library.core.service.ApplicationUserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -30,7 +32,8 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
         }
     }
 
-    @Transactional
+    @SneakyThrows
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public void takeBook(String login, Long bookId) {
         Boolean available = bookRepository.isAvailable(bookId);
