@@ -20,14 +20,14 @@ public class BookController {
         return mapper.toBookDto(bookService.findBookById(id));
     }
 
-    @PostMapping("/api/v1/author/{authorId}/book") //сохраняет!
+    @PostMapping("/api/v1/author/{authorId}/book")
     public void save(@PathVariable(name = "authorId") long authorId,
                      @RequestBody BookDtoShort bookDtoShort) {
         Book entity = mapper.toEntity(bookDtoShort);
         bookService.save(entity, authorId);
     }
 
-    @PatchMapping("/api/v1/books/{id}") //обновляет!
+    @PatchMapping("/api/v1/books/{id}")
     public void updateBookTitle(
             @PathVariable(name = "id") long id,
             @RequestBody BookDto bookDto) {
@@ -35,7 +35,7 @@ public class BookController {
         bookService.updateBook(entity2, id);
     }
 
-    @DeleteMapping("/api/v1/books/{id}") //работает!
+    @DeleteMapping("/api/v1/books/{id}")
     public void delete(@PathVariable(name = "id") long id) {
         bookService.delete(id);
     }

@@ -33,7 +33,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/api/v1/authors").hasAnyRole("GUEST", "ADMIN")
                         .requestMatchers("/api/v1/authors/{id}").hasAnyRole("GUEST", "ADMIN")
                         .requestMatchers("/api/v1/books/{id}").hasAnyRole("GUEST", "ADMIN")
-                        .requestMatchers("/api/v1/account/book/{book_id}").hasAnyRole("GUEST", "ADMIN") //убрать admin!
+                        .requestMatchers("/api/v1/account/book/{book_id}").hasAnyRole("GUEST", "ADMIN")
                         .requestMatchers(HttpMethod.POST,"/api/v1/authors").hasRole("ADMIN")
                         .requestMatchers("/api/v1/account").permitAll()
                         .requestMatchers("/**").hasRole("ADMIN") //переместили сюда и заработало! /** должна быть в конце.

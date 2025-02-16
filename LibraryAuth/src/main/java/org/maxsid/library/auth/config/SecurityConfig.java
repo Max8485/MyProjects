@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/api/v1/auth/token").permitAll()
-                        .requestMatchers("/api/v1/registration").permitAll()); //работает!
+                        .requestMatchers("/api/v1/registration").permitAll());
 
         return http.build();
     }

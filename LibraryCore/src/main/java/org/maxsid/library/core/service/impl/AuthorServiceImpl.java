@@ -32,7 +32,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author save(Author author) { //работает!
+    public Author save(Author author) {
         boolean isExists = authorRepository.existsByUniqueIndex(author.getFirstName(), author.getLastName(), author.getMiddleName(), author.getDateOfBirth());
         if (isExists) {
             throw new AuthorAlreadyExistsException();

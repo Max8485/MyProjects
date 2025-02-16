@@ -16,7 +16,7 @@ public class AuthorController {
     private final AuthorService authorService;
     private final AuthorDtoMapper mapper;
 
-    @GetMapping("/api/v1/authors") //работает!
+    @GetMapping("/api/v1/authors")
     public Page<AuthorDto> findAll(@RequestParam(name = "extended") boolean isExtended,
                                    Pageable pageable) { //
         if (isExtended) {
@@ -26,18 +26,18 @@ public class AuthorController {
         }
     }
 
-    @PostMapping("/api/v1/authors") // сейв проходит! доработать?
+    @PostMapping("/api/v1/authors")
     public AuthorDto save(@RequestBody AuthorDto authorDTO) {
         Author entity = mapper.toEntityAuthor(authorDTO);
         return mapper.toDtoWithBooks(authorService.save(entity));
     }
 
-    @GetMapping("/api/v1/authors/{id}") //работает!
+    @GetMapping("/api/v1/authors/{id}")
     public AuthorDto findAuthorById(@PathVariable(name = "id") long id) {
         return mapper.toDtoWithBooks(authorService.findAuthorById(id));
     }
 
-    @PatchMapping("/api/v1/authors/{id}")  // обновляет! доработать?
+    @PatchMapping("/api/v1/authors/{id}")
     public void updateAuthor(@RequestBody AuthorDto authorDto,
                              @PathVariable(name = "id") long id) {
         Author entity = mapper.toEntityAuthor(authorDto);
@@ -45,7 +45,7 @@ public class AuthorController {
 
     }
 
-    @DeleteMapping("/api/v1/authors/{id}") //работает!
+    @DeleteMapping("/api/v1/authors/{id}")
     public void delete(@PathVariable(name = "id") long id) {
         authorService.delete(id);
     }

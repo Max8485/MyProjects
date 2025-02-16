@@ -18,12 +18,12 @@ public class BookServiceImpl implements BookService {
     private final AuthorRepository authorRepository;
 
     @Override
-    public Book findBookById(long id) { // работает!
+    public Book findBookById(long id) {
         return bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
     }
 
     @Override
-    public void save(Book book, long authorId) { //работает!
+    public void save(Book book, long authorId) {
         if (authorRepository.existsById(authorId)) {
             book.setAuthor(Author.builder()
                     .id(authorId)
@@ -35,7 +35,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void updateBook(Book book, long id) { //работает!
+    public void updateBook(Book book, long id) {
         bookRepository.findById(id).ifPresentOrElse(
                 b -> {
                     book.setAuthor(b.getAuthor());
@@ -47,7 +47,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void delete(long id) { //работает!
+    public void delete(long id) {
         bookRepository.deleteById(id);
     }
 }

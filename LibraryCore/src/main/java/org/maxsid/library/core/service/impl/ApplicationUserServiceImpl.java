@@ -9,6 +9,7 @@ import org.maxsid.library.core.exceptions.LimitBooksForUserException;
 import org.maxsid.library.core.repository.ApplicationUserRepository;
 import org.maxsid.library.core.repository.BookRepository;
 import org.maxsid.library.core.service.ApplicationUserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,9 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
 
     private final ApplicationUserRepository userRepository;
     private final BookRepository bookRepository;
+
+    @Value("${limitBooksForPerson}")
+    private int limitBooks;
 
     @Override
     public void saveUser(ApplicationUser user) {
@@ -39,7 +43,7 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
         Boolean available = bookRepository.isAvailable(bookId);
         if (available) {
             Optional<Long> userIdOpt = userRepository.findUserIdByLogin(login);
-            if (userIdOpt.isPresent() && bookRepository.countBooksByUserId(userIdOpt.get()) < 3) { //вынести в application.yaml
+            if (userIdOpt.isPresent() && bookRepository.countBooksByUserId(userIdOpt.get()) < limitBooks) {
                 bookRepository.updateUserIdForBook(userIdOpt.get(), bookId);
             } else {
                 throw new LimitBooksForUserException();

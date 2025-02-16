@@ -40,6 +40,6 @@ public class ApplicationUser {
     @CreationTimestamp
     private LocalDate creationDate;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Book> books;
 }
